@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>helloooo</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000; /* Latar belakang hitam */
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            overflow: hidden; /* Mencegah scroll saat kembang api */
+        
+        }
+        .flower {
+            display: none;
+            position: absolute;
+            animation: bloom 1s forwards;
+            font-size: 120px; /* Ukuran bunga sakura */
+            color: #ff69b4; /* Warna bunga */
+            text-shadow: 2px 2px 5px rgba(255, 105, 180, 0.5); /* Bayangan untuk efek estetis */
+        }
+        .center-flower {
+            font-size: 200px; /* Ukuran bunga tengah yang lebih besar */
+            top: 40%; /* Posisi bunga tengah */
+            left: 50%; /* Posisi tengah horizontal */
+            transform: translate(-50%, -50%); /* Mengatur posisi agar tepat di tengah */
+        }
+        .message {
+            display: none;
+            font-size: 24px;
+            color: #ffffff;
+            margin-bottom: 200px; /* Jarak antara tulisan dan bunga */
+            position: absolute; /* Mengatur posisi pesan */
+            top: 30%; /* Posisi pesan di atas bunga */
+            left: 50%; /* Posisi tengah horizontal */
+            transform: translate(-50%, -50%); /* Mengatur posisi agar tepat di tengah */
+            animation: fadeIn 1s forwards;
+        }
+        @keyframes bloom {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ff32d3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            z-index: 1; /* Agar tombol tetap di atas */
+        }
+        .separator {
+            width: 100%;
+            height: 50px;
+            background-color: #000000;
+            margin: 20px 0;
+        }
+        .firework {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: explode 1s forwards;
+        }
+        @keyframes explode {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(5);
+                opacity: 0;
+            }
+        }
+        .firework-animation {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: firework-explode 1s forwards;
+        }
+        @keyframes firework-explode {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(3);
+                opacity: 0;
+            }
+
+        }
+
+    </style>
+</head>
+<body>
+
+    <p>Tekenn cobaa</p>
+    <button id="flowerButton">DISINIIIIII</button>
+    <div class="separator"></div> <!-- Pemisah halaman -->
+    
+    <!-- Bunga sakura -->
+    <div class="flower center-flower" id="centerFlower">🌸</div> <!-- Bunga tengah -->
+    <div class="flower" id="flowerImage1">🌸</div>
+    <div class="flower" id="flowerImage2">🌸</div>
+    <div class="flower" id="flowerImage3">🌸</div>
+    <div class="flower" id="flowerImage4">🌸</div>
+    <div class="flower" id="flowerImage5">🌸</div>
+    <div class="flower" id="flowerImage6">🌸</div>
+    
+    <div class="message" id="flowerMessage">maaff yaaa kaa sitaaaa🙏</div> <!-- Pesan di atas bunga -->
+
+    <!-- Elemen audio untuk suara kembang api -->
+    <audio id="fireworkSound" src="path/to/firework-sound.mp3" preload="auto"></audio>
+
+    <script>
+        document.getElementById('flowerButton').addEventListener('click', function() {
+            const flowers = document.querySelectorAll('.flower');
+            const message = document.getElementById('flowerMessage');
+            const button = document.getElementById('flowerButton');
+            const separator = document.querySelector('.separator');
+            const fireworkSound = document.getElementById('fireworkSound');
+
+            // Sembunyikan tombol dan pemisah
+            button.style.display = 'none';
+            separator.style.display = 'none';
+
+            // Tampilkan bunga tengah
+            const centerFlower = document.getElementById('centerFlower');
+            centerFlower.style.display = 'block';
+
+            // Tampilkan bunga lainnya di posisi acak
+            flowers.forEach((flower, index) => {
+                if (flower !== centerFlower) {
+                    flower.style.left = Math.random() * (window.innerWidth - 150) + 'px'; // Menghindari overflow
+                    flower.style.top = Math.random() * (window.innerHeight - 150) + 'px'; // Menghindari overflow
+                    flower.style.display = 'block';
+                }
+            });
+            message.style.display = 'block';
+
+            // Mainkan suara kembang api
+            fireworkSound.currentTime = 0; // Reset suara
+            fireworkSound.play().catch(error => {
+                console.error("Error playing sound:", error);
+            });
+
+            // Menampilkan kembang api
+            for (let i = 0; i < 20; i++) { // Meningkatkan jumlah kembang api
+                createFirework();
+            }
+
+            setTimeout(() => {
+                flowers.forEach(flower => {
+                    flower.style.display = 'none';
+                });
+                message.style.display = 'none';
+
+                // Tampilkan kembali tombol dan pemisah
+                button.style.display = 'block';
+                separator.style.display = 'block';
+            }, 3000); // Bunga dan pesan akan hilang setelah 3 detik
+        });
+
+        function createFirework() {
+            const firework = document.createElement('div');
+            firework.className = 'firework-animation';
+            firework.style.left = Math.random() * window.innerWidth + 'px';
+            firework.style.top = Math.random() * window.innerHeight + 'px';
+            firework.style.backgroundColor = getRandomColor(); // Warna acak untuk kembang api
+            document.body.appendChild(firework);
+            setTimeout(() => {
+                firework.remove();
+            }, 1000); // Kembang api akan hilang setelah 1 detik
+        }
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    </script>
+
+</body>
+</html>
